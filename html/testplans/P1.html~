@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<head>
+  <html lang="en">
+  <title>P19605 Composite Pump</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    function Enable(){
+      var x = document.getElementById("EnableText");
+      if (x.innerHTML === "Disabled") {
+        x.innerHTML = "Enabled";
+      } else {
+        x.innerHTML = "Disabled";
+      }
+    }
+  </script>
+  <script>
+/*    $(function()
+      {
+        $.ajax({
+          url: "/cgi-bin/Main.py",
+          type: "post",
+          data: {  $('pump').serialize() },
+           dataType: "application/json",
+          success: function(response){
+            $("#div").html(response);
+            console.log("There is a response"); 
+          }
+        });
+      });
+      $(function () {
+        $('pump').on('submit', function (e) {
+          e.preventDefault();
+          $.ajax({
+            type: 'post',
+            url: '/cgi-bin/Main.py',
+            datatype: "json",
+            data: $('pump').serialize(),
+            success: function () {
+              alert('form was submitted');
+            }
+          });
+        });
+      });*/
+
+      $(document).ready(function() {
+        $("#pump").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: '/cgi-bin/Main.py',
+            data: $('#pump').serialize(),
+            success: function(response) {
+              console.log("Operation successful");
+              $("#curPos").attr('value',response);
+              $("#plot").html(response);
+              console.log(response)
+
+            },
+            error: function(response) {
+              console.log("Operation unsuccessful");
+              console.log(response)
+            }
+          });
+        });
+        // Code to 
+        $("#Enable").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: '/cgi-bin/Enable.py',
+            data: {"ENA_Val": $("#ENA_button").val()}, // pass button text as an argument to python script
+            success: function(response) {
+              $("#ENA_button").attr('value',response); // Set button text to enable status
+              if(response == "Disabled "){
+                $("#curPos").attr('value',"0");
+              }
+            },
+            error: function() {
+              console.log("Toggle Enable unsuccessful"); //
+            }
+          });
+        });
+      });
+      
+    
+  </script>
+  <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:200px}
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 28.4px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 28.4px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    .container {
+      width: 100%;
+      clear: both;
+    }
+
+    .container input {
+      width: 100%;
+      clear: both;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->   
+<div class="w3-top">
+  <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="/index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
+    <a href="P1.html" class="w3-bar-item w3-button w3-padding-large w3-white">P1 Test Plan</a>
+    <a href="P2.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">P2 Test Plan</a>
+    <a href="P3.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">P3 Test Plan</a>
+    <a href="P4.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">P4 Test Plan</a>
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+    <a href="P1.html" class="w3-bar-item w3-button w3-padding-large">P1 Test Plan</a>
+    <a href="P2.html" class="w3-bar-item w3-button w3-padding-large">P2 Test Plan</a>
+    <a href="P3.html" class="w3-bar-item w3-button w3-padding-large">P3 Test Plan</a>
+    <a href="P4.html" class="w3-bar-item w3-button w3-padding-large">P4 Test Plan</a>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-container w3-red w3-center" style="padding:50px 0px 0px 0px">
+  <h1 class="w3-margin w3-jumbo">P1 Test Plan</h1>
+  <p class="w3-xlarge">Determining Pumping Potential</p>
+</header>
+
+<!-- First Grid -->
+<div class="w3-row-padding w3-padding-24 w3-container"> <!--w3-row-padding  -->
+  <div class="w3-content" style="width:50%; margin-left: 5px;">
+    <div class="w3-half">
+      <h5 class="w3-padding-10"></h5>
+      <div class="container" style="margin-left:0">
+        <!-- Enable button display -->
+        <form name="Enable" id = "Enable" method="get">
+          <input type="submit" width="50px" name = "ENA_button" id ="ENA_button" style="width:100%" value="Disabled">
+        </form><br>
+        <!-- Test plan input form -->
+        <form id = "pump" name="pump" method="get"> <!-- action="/cgi-bin/Main.py"-->
+            <label>Direction:</label>
+            <select name="Dir">
+              <option value = 0>Positive</option>
+              <option value = 1>Negative</option>
+            </select>
+            Current Position: <input id ="curPos" type="text" name="curPos" style="width:20%" value="0" steps="0.01" readonly> <br><br>
+            Frequency: <input type="number" name="freq" steps="0.01" value=600 required> <br><br>
+            Number Of Oscillations: <input type="number" name="cycles" value=1 required><br><br>
+            Pump Rotation angle [degrees]: <input type="number" name="degree" value =10 required><br><br>
+            <input type="submit" value="Submit">
+        </form> 
+      </div>
+    </div>
+    <!-- Place holder for plotly plot -->
+    <div class="w3-half w3-center" name="plot" id="plot">
+      <img src= "Pump_3DCAD.png" width="500"></i>
+    </div>
+  </div>
+</div>
+
+<div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+    
+</div>
+
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+
+</body>
+</html>
